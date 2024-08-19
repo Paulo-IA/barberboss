@@ -1,4 +1,5 @@
-﻿using BarberBoss.Domain.Repositories.Billings;
+﻿using BarberBoss.Domain.Repositories;
+using BarberBoss.Domain.Repositories.Billings;
 using BarberBoss.Infrastructure.DataAccess;
 using BarberBoss.Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ public static class DependencyInjectionExtension
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IBillingsWriteOnlyRepository, BillingsRepository>();
+
+        services.AddScoped<IUnityOfWork, UnitOfWork>();
     }
 
     private static void AddDbContext(

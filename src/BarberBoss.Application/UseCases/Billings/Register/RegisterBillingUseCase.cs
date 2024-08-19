@@ -1,17 +1,23 @@
 ﻿using BarberBoss.Communication.Requests;
 using BarberBoss.Communication.Responses;
 using BarberBoss.Domain.Entities;
+using BarberBoss.Domain.Repositories;
 using BarberBoss.Domain.Repositories.Billings;
 
 namespace BarberBoss.Application.UseCases.Billings.Register;
 
 public class RegisterBillingUseCase : IRegisterBillingUseCase
 {
+    private readonly IUnityOfWork _unityOfWork;
     private readonly IBillingsWriteOnlyRepository _repository;
 
-    public RegisterBillingUseCase(IBillingsWriteOnlyRepository repository)
+    public RegisterBillingUseCase(
+        IBillingsWriteOnlyRepository repository,
+        IUnityOfWork unityOfWork
+    )
     {
         _repository = repository;
+        _unityOfWork = unityOfWork;
     }
 
     public ResponseRegisteredBillingJson Execute(RequestBillingJson request)
@@ -29,6 +35,7 @@ public class RegisterBillingUseCase : IRegisterBillingUseCase
 
         _repository.Add(entity);
         
+        _unityOfWork.Commit();
 
         return new ResponseRegisteredBillingJson {
             Title = "Billing test"

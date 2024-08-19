@@ -16,6 +16,5 @@ internal class BillingsRepository : IBillingsWriteOnlyRepository
     {
         _dbContext.Billings.Add(billing);
 
-        _dbContext.SaveChanges();
     }
 }
