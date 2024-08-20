@@ -1,3 +1,4 @@
+using BarberBoss.Api.Filters;
 using BarberBoss.Application;
 using BarberBoss.Infrastructure;
 
@@ -10,9 +11,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddRouting(e => e.LowercaseQueryStrings = true);
 
-// Filter
-
-
+builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();

@@ -3,6 +3,7 @@ using BarberBoss.Communication.Responses;
 using BarberBoss.Domain.Entities;
 using BarberBoss.Domain.Repositories;
 using BarberBoss.Domain.Repositories.Billings;
+using BarberBoss.Exception.ExceptionBase;
 
 namespace BarberBoss.Application.UseCases.Billings.Register;
 
@@ -51,7 +52,7 @@ public class RegisterBillingUseCase : IRegisterBillingUseCase
         {
             var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
 
-            // Throw error
+            throw new ErrorOnValidationException(errorMessages);
         }
     }
 }

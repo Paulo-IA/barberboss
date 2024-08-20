@@ -1,5 +1,4 @@
 ﻿using BarberBoss.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace BarberBoss.Infrastructure.DataAccess;
 
