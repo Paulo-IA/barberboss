@@ -44,6 +44,14 @@ public class RegisterBillingUseCase : IRegisterBillingUseCase
 
     private void Validate(RequestBillingJson request)
     {
-        
+        var validator = new RegisterBillingValidator();
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
+
+            // Throw error
+        }
     }
 }
