@@ -1,4 +1,5 @@
 using BarberBoss.Api.Filters;
+using BarberBoss.Api.Middleware;
 using BarberBoss.Application;
 using BarberBoss.Infrastructure;
 
@@ -9,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddRouting(e => e.LowercaseQueryStrings = true);
+builder.Services.AddRouting(e => e.LowercaseUrls = true);
 
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
@@ -23,6 +24,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<CultureMiddleware>();
 
 app.UseHttpsRedirection();
 
