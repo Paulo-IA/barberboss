@@ -1,4 +1,5 @@
-﻿using BarberBoss.Application.UseCases.Billings.Register;
+﻿using BarberBoss.Application.UseCases.Billings.GetAll;
+using BarberBoss.Application.UseCases.Billings.Register;
 using BarberBoss.Communication.Requests;
 using BarberBoss.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ public class BillingsController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(List<ResponseGetAllBillingsJson>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseBillingsJson), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll(
         [FromServices] IGetAllBillingsUseCase useCase
@@ -31,6 +32,9 @@ public class BillingsController : ControllerBase
     {
         var response = await useCase.Execute();
 
-        return Ok(response);
+        if (response.Billings.Count != 0)
+            return Ok(response);
+
+        return NoContent();
     }
 }

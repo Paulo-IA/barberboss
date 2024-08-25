@@ -1,4 +1,5 @@
-﻿using BarberBoss.Application.UseCases.Billings.Register;
+﻿using BarberBoss.Application.UseCases.Billings.GetAll;
+using BarberBoss.Application.UseCases.Billings.Register;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BarberBoss.Application;
@@ -8,5 +9,6 @@ public static class DependencyInjectionExtension
     public static void AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IRegisterBillingUseCase, RegisterBillingUseCase>();
+        services.AddScoped<IGetAllBillingsUseCase, GetAllBillingsUseCase>();
     }
 }
