@@ -21,7 +21,7 @@ public class RegisterBillingUseCase : IRegisterBillingUseCase
         _unityOfWork = unityOfWork;
     }
 
-    public ResponseRegisteredBillingJson Execute(RequestBillingJson request)
+    public async Task<ResponseRegisteredBillingJson> Execute(RequestBillingJson request)
     {
         Validate(request);
 
@@ -34,9 +34,9 @@ public class RegisterBillingUseCase : IRegisterBillingUseCase
             PaymentType = (Domain.Enums.PaymentType)request.PaymentType,
         };
 
-        _repository.Add(entity);
+        await _repository.Add(entity);
         
-        _unityOfWork.Commit();
+        await _unityOfWork.Commit();
 
         return new ResponseRegisteredBillingJson {
             Title = "Billing test"

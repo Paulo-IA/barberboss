@@ -12,13 +12,25 @@ public class BillingsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(ResponseRegisteredBillingJson), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult Register(
+    public async Task<IActionResult> Register(
         [FromServices] IRegisterBillingUseCase useCase,
         [FromBody] RequestBillingJson request
     )
     {
-        var response = useCase.Execute(request);
+        var response = await useCase.Execute(request);
 
         return Created(string.Empty, response);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(List<ResponseGetAllBillingsJson>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetAll(
+        [FromServices] IGetAllBillingsUseCase useCase
+    )
+    {
+        var response = await useCase.Execute();
+
+        return Ok(response);
     }
 }

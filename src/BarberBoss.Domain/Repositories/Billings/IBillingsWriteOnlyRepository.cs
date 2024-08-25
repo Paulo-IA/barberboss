@@ -3,5 +3,5 @@
 namespace BarberBoss.Domain.Repositories.Billings;
 public interface IBillingsWriteOnlyRepository
 {
-    void Add(Billing billing);
+    Task Add(Billing billing);
 }
