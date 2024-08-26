@@ -20,6 +20,6 @@ internal class BillingsRepository : IBillingsWriteOnlyRepository, IBillingsReadO
     
     public async Task<List<Billing>> GetAll()
     {
-        return await _dbContext.Billings.ToListAsync();
+        return await _dbContext.Billings.AsNoTracking().ToListAsync();
     }
 }

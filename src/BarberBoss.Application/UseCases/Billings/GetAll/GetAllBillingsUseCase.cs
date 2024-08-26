@@ -1,4 +1,5 @@
-﻿using BarberBoss.Communication.Responses;
+﻿using AutoMapper;
+using BarberBoss.Communication.Responses;
 using BarberBoss.Domain.Repositories.Billings;
 
 namespace BarberBoss.Application.UseCases.Billings.GetAll;
@@ -6,9 +7,15 @@ namespace BarberBoss.Application.UseCases.Billings.GetAll;
 public class GetAllBillingsUseCase : IGetAllBillingsUseCase
 {
     public readonly IBillingsReadOnlyRepository _repository;
-    public GetAllBillingsUseCase(IBillingsReadOnlyRepository repository)
+    public readonly IMapper _mapper;
+
+    public GetAllBillingsUseCase(
+        IBillingsReadOnlyRepository repository,
+        IMapper mapper
+    )
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<ResponseBillingsJson> Execute()
@@ -17,7 +24,7 @@ public class GetAllBillingsUseCase : IGetAllBillingsUseCase
 
         return new ResponseBillingsJson
         {
-            Billings = []
+            Billings = _mapper.Map<List<ResponseShortBillingJson>>(result)
         };
 
     }
