@@ -120,6 +120,9 @@
   <data name="BILLING_CANT_BE_FOR_THE_FUTURE" xml:space="preserve">
     <value>The billing can't be for the future!</value>
   </data>
+  <data name="BILLING_NOT_FOUND" xml:space="preserve">
+    <value>Billing not found.</value>
+  </data>
   <data name="PAYMENT_TYPE_INVALID" xml:space="preserve">
     <value>Payment type is not valid!</value>
   </data>

@@ -22,4 +22,9 @@ internal class BillingsRepository : IBillingsWriteOnlyRepository, IBillingsReadO
     {
         return await _dbContext.Billings.AsNoTracking().ToListAsync();
     }
+    
+    public async Task<Billing?> GetById(long id)
+    {
+        return await _dbContext.Billings.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
+    }
 }
