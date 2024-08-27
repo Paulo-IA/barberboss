@@ -18,6 +18,19 @@ internal class BillingsRepository : IBillingsWriteOnlyRepository, IBillingsReadO
 
     }
     
+    public async Task<bool> Delete(long id)
+    {
+        var result = await _dbContext.Billings.FirstOrDefaultAsync(b => b.Id == id);
+        if (result is null)
+        {
+            return false;
+        }
+
+        _dbContext.Billings.Remove(result);
+        
+        return true;
+    }
+
     public async Task<List<Billing>> GetAll()
     {
         return await _dbContext.Billings.AsNoTracking().ToListAsync();
