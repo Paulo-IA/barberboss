@@ -1,4 +1,4 @@
-﻿using BarberBoss.Application.UseCases.Billings.Register;
+﻿using BarberBoss.Application.UseCases.Billings;
 using BarberBoss.Communication.Enums;
 using BarberBoss.Exception;
 using CommonTestUtilities.Requests;
@@ -30,7 +30,7 @@ public class RegisterBillingValidatorTests
     public void Error_Title_Empty(string title)
     {
         // Arrange
-        var validator = new RegisterBillingValidator();
+        var validator = new BillingValidator();
         var request = RequestBillingJsonBuilder.Build();
         request.Title = title;
 
@@ -51,7 +51,7 @@ public class RegisterBillingValidatorTests
     public void Error_Date_Future()
     {
         // Arrange
-        var validator = new RegisterBillingValidator();
+        var validator = new BillingValidator();
         var request = RequestBillingJsonBuilder.Build();
         request.Date = DateTime.Now.AddDays(1);
 
@@ -72,7 +72,7 @@ public class RegisterBillingValidatorTests
     public void Error_Payment_Type_Invalid()
     {
         // Arrange
-        var validator = new RegisterBillingValidator();
+        var validator = new BillingValidator();
         var request = RequestBillingJsonBuilder.Build();
         request.PaymentType = (PaymentType)700;
 
@@ -95,7 +95,7 @@ public class RegisterBillingValidatorTests
     public void Error_Amount_Invalid(decimal amount)
     {
         // Arrange
-        var validator = new RegisterBillingValidator();
+        var validator = new BillingValidator();
         var request = RequestBillingJsonBuilder.Build();
         request.Amount = amount;
 

@@ -1,53 +1,57 @@
 ﻿using AutoMapper;
-using BarberBoss.Application.AutoMapper;
+using BarberBoss.Application.UseCases.Billings.Register;
 using BarberBoss.Communication.Requests;
-using BarberBoss.Communication.Responses;
-using BarberBoss.Domain.Entities;
 using BarberBoss.Domain.Repositories;
 using BarberBoss.Domain.Repositories.Billings;
+using BarberBoss.Exception;
 using BarberBoss.Exception.ExceptionBase;
 
-namespace BarberBoss.Application.UseCases.Billings.Register;
+namespace BarberBoss.Application.UseCases.Billings.Update;
 
-public class RegisterBillingUseCase : IRegisterBillingUseCase
+public class UpdateBillingUseCase : IUpdateBillingUseCase
 {
+    private readonly IBillingUpdateOnlyRepository _repository;
     private readonly IMapper _mapper;
     private readonly IUnityOfWork _unityOfWork;
-    private readonly IBillingsWriteOnlyRepository _repository;
 
-    public RegisterBillingUseCase(
+    public UpdateBillingUseCase(
+        IBillingUpdateOnlyRepository repository,
         IMapper mapper,
-        IUnityOfWork unityOfWork,
-        IBillingsWriteOnlyRepository repository
+        IUnityOfWork unityOfWork
     )
     {
+        _repository = repository;
         _mapper = mapper;
         _unityOfWork = unityOfWork;
-        _repository = repository;
     }
 
-    public async Task<ResponseRegisteredBillingJson> Execute(RequestBillingJson request)
+    public async Task Execute(RequestBillingJson request, long id)
     {
         Validate(request);
 
-        var entity = _mapper.Map<Billing>(request);
+        var billing = await _repository.GetById(id);
 
-        await _repository.Add(entity);
-        
+        if (billing is null)
+        {
+            throw new NotFoundException(ResourceErrorMessages.BILLING_NOT_FOUND);
+        }
+
+        _mapper.Map(request, billing);
+
+        _repository.Update(billing);
+
         await _unityOfWork.Commit();
-
-        return _mapper.Map<ResponseRegisteredBillingJson>(entity);
     }
 
     private void Validate(RequestBillingJson request)
     {
         var validator = new BillingValidator();
+
         var result = validator.Validate(request);
 
         if (!result.IsValid)
         {
             var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
-
             throw new ErrorOnValidationException(errorMessages);
         }
     }
